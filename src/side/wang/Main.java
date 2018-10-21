@@ -1,5 +1,6 @@
 package side.wang;
 
+import side.wang.control.Listener;
 import side.wang.view.Window;
 
 /**
@@ -9,7 +10,9 @@ import side.wang.view.Window;
 public class Main {
     public static void main(String[] args) {
         Window win=new Window();
+        Listener listener = new Listener();
+        win.setListener(listener);
         win.setTitle("信源编码模拟"); 
-        win.setBounds(100,100,420,260);      
+        win.setBounds(100,100,420,300);
     }  
 }
