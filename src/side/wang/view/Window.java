@@ -11,7 +11,9 @@ public class Window extends JFrame {
     JButton open;
     JComboBox method;
     JButton coder;
-    Label table [][];
+    JScrollPane scrollPane;
+    String[] columnNames = {"字符", "概率", "编码", "码长"};// 定义表格列名数组
+    JTextField d1, d2, d3, d4;
     
     public Window() {
         init();       
@@ -42,21 +44,29 @@ public class Window extends JFrame {
         panel.add(method);
         panel.add(coder);
         
-        JPanel grid = new JPanel();
-        grid.setLayout(new GridLayout(6, 10));
-        table = new Label[6][10];  
-        for(int i = 0; i < 6; i++) {
-            for(int j = 0; j < 10; j++) {
-                table[i][j] = new Label();
-                if(j % 2 == 0){
-                    table[i][j].setBackground(Color.gray);
-                }
-                grid.add(table[i][j]); 
-            }
-        }
+        JPanel spanel = new JPanel();
+        spanel.add(new JLabel("平均码长:"));
+        d1 = new JTextField(4);
+        d2 = new JTextField(4);
+        d3 = new JTextField(4);
+        d4 = new JTextField(5);
+        spanel.add(d1);
+        spanel.add(new JLabel("信源熵:"));
+        spanel.add(d2);
+        spanel.add(new JLabel("信息率:"));
+        spanel.add(d3);
+        spanel.add(new JLabel("编码效率:"));
+        spanel.add(d4);
+               
+        String[][] tableValues = new String [100][4];
+        JTable table = new JTable(tableValues,columnNames);
+        scrollPane = new JScrollPane(table);
+        
+        
              
         add(panel,BorderLayout.NORTH);
-//        add(grid, BorderLayout.CENTER); 
+        this.add(scrollPane, BorderLayout.CENTER);
+        this.add(spanel, BorderLayout.SOUTH);
         setVisible(true);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
@@ -68,14 +78,19 @@ public class Window extends JFrame {
         listener.setOpenButton(open);
         listener.setCodeMethod(method);
         listener.setCoderButton(coder);
-        listener.setLabelArray(table);
+//        listener.setLabelArray(table);
         filename.addActionListener(listener);
         open.addActionListener(listener);
         coder.addActionListener(listener);
     }
-    public void showData(String[] columnNames, String[][] tableValues){
-        JTable table = new JTable(tableValues,columnNames);
-        JScrollPane scrollPane = new JScrollPane(table);
+    public void showData(String[][] tableValues, String [] parm){
+        this.remove(scrollPane);
+        JTable table = new JTable(tableValues,columnNames);       
+        scrollPane = new JScrollPane(table);
         this.add(scrollPane, BorderLayout.CENTER);
+        d1.setText(parm[0]);
+        d2.setText(parm[1]);
+        d3.setText(parm[2]);
+        d4.setText(parm[3]);
     }
 }

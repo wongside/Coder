@@ -5,6 +5,7 @@
  */
 package side.wang.model;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 /**
  *
@@ -41,9 +42,14 @@ public class Huffman {
             data.setCodeLength(((Data)list.get(i)).getCodeLength());//取出码长  
             data.setCodeword(((Data)list.get(i)).getCodeword());//取出码字  
             l.set(i, data);//将新得的Data对象加到列表  
-            System.out.println(data.toString());
+//            System.out.println(data.toString());
         }  
-        
+        Collections.sort(l, (Object o1, Object o2) -> {
+            Data d1 = (Data)o1;
+            Data d2 = (Data)o2;
+            int t = d2.getProb().compareTo(d1.getProb());
+            return t;
+        });
     }  
     //创建树  
     public static void createTree(List list){  

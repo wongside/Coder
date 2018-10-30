@@ -13,6 +13,6 @@ public class Main {
         Listener listener = new Listener();
         win.setListener(listener);
         win.setTitle("信源编码模拟"); 
-        win.setBounds(100,100,420,300);
+        win.setBounds(100,100,480,300);
     }  
 }

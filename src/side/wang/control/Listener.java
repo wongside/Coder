@@ -47,20 +47,51 @@ public class Listener implements CoderActionListener, ItemListener{
             fileChooser.showDialog(new JLabel(), "选择需要编码的文件");
             file = fileChooser.getSelectedFile();
             String tmp = file.getAbsolutePath();
-//            System.out.println(tmp);
             filename.setText(tmp.substring(tmp.lastIndexOf('\\')+1));
             win.validate();
         }else if(command.equals("coder")){   
-            System.out.println("sss");
-            String[] columnNames = {"A","B"};// 定义表格列名数组
-            String[][] tableValues = {{"A1","B1"},{"A2","B2"},{"A3","B3"},{"A4","B4"},{"A5","B5"}};
-            win.showData(columnNames, tableValues);
+            List list = Coder.getData(file);
+            
+            String[][] tableValues = new String [list.size()][4];
+            switch (codeMethod.getSelectedIndex()) {
+                case 1:
+                    list = new Shannon().isShannon(list);
+                    break;
+                case 2:
+                    list = new Fano().isFano(list);
+                    break;
+                case 3:
+                    new Huffman().isHuffman(list);
+                    break;
+                default:
+                    break;
+            }
+            double k = 0.0;
+            double hx = 0.0;
+            for(int i = 0; i < list.size(); i++){
+                Data data = (Data)list.get(i);
+                int j = 0;
+                tableValues[i][j++] = "    " + data.getSymbol() + "";
+//                String tmp;
+//                if(data.getProb() < 10e-4){
+//                    tmp = (data.getProb() * 10e4) + "" ;
+//                }else{
+//                    tmp = data.getProb() + "" ;
+//                }
+                tableValues[i][j++] = "  " +  data.getProb();
+                tableValues[i][j++] = "  " + data.getCodeword();
+                tableValues[i][j++] = "    " + data.getCodeLength()+"";
+                k += data.getProb() * data.getCodeLength();
+                hx += data.getProb() * Math.log(data.getProb());
+            }
+            hx = -hx;
+            String parm [] = new String [4];
+            parm[0] = String.valueOf(k).substring(0,4);
+            parm[1] = String.valueOf(hx).substring(0,4);
+            parm[2] = String.valueOf(k).substring(0,4);
+            parm[3] = String.valueOf(hx / k * 100).substring(0,4) + "%";
+            win.showData(tableValues, parm);
             win.validate();
-//            List list = Coder.getData(file);
-//            new Huffman().isHuffman(list);
-//            for(int i = 0; i < list.size(); i++){
-//                System.out.println(((Data)list.get(i)).toString());                  
-//            }
             
         }
     }
