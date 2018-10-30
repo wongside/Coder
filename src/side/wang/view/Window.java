@@ -21,7 +21,7 @@ public class Window extends JFrame {
         listener = new  Listener();
         //输入框
         filename = new JTextField(10);
-        filename.setText("输入文件名");
+        filename.setText("testData.txt");
         filename.setActionCommand("filename");       
         
         open = new JButton("选择文件");
@@ -56,13 +56,14 @@ public class Window extends JFrame {
         }
              
         add(panel,BorderLayout.NORTH);
-        add(grid, BorderLayout.CENTER); 
+//        add(grid, BorderLayout.CENTER); 
         setVisible(true);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
     
     public void setListener(Listener listener){
         this.listener = listener;
+        listener.setWindow(this);
         listener.setFilenameFiled(filename);
         listener.setOpenButton(open);
         listener.setCodeMethod(method);
@@ -71,5 +72,10 @@ public class Window extends JFrame {
         filename.addActionListener(listener);
         open.addActionListener(listener);
         coder.addActionListener(listener);
+    }
+    public void showData(String[] columnNames, String[][] tableValues){
+        JTable table = new JTable(tableValues,columnNames);
+        JScrollPane scrollPane = new JScrollPane(table);
+        this.add(scrollPane, BorderLayout.CENTER);
     }
 }
